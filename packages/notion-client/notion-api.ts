@@ -71,12 +71,13 @@ export class NotionAPI {
     const pageBlockId = Object.keys(recordMap.block)[0];
     const pageBlock = recordMap.block[pageBlockId].value;
     const authorId = pageBlock.created_by_id;
-    const users = await this.getUsers([authorId]);
-    const author = users.results[0];
-
-    recordMap.notion_user = {
-      [authorId]: author,
-    };
+    if (authorId) {
+      const users = await this.getUsers([authorId]);
+      const author = users.results[0];
+      recordMap.notion_user = {
+        [authorId]: author,
+      };
+    }
 
     // ensure that all top-level maps exist
     recordMap.collection = recordMap.collection ?? {};
